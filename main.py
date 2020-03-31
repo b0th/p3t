@@ -31,7 +31,17 @@ class Matrix:
             cleared_list[i]=clear_line
         return cleared_list
 
-#print(pet.snail)
+    # v Recommended to use after function INIT v
+    
+    def ListToMatrix(self,MATRIX):
+        for i in range(len(MATRIX)):
+            MATRIX[i]=list(MATRIX[i])
+        return MATRIX
+
+    def MatrixToList(self,LIST):
+        for i in range(len(LIST)):
+            LIST[i]=''.join(LIST[i])
+        return LIST
 
 class Pet:
 
@@ -44,27 +54,36 @@ class Pet:
         
 
     def SpawnAtCenter(self,cleared_list):
+
+        cleared_list=Matrix().ListToMatrix(cleared_list)
+       
         top_line=len(cleared_list)-5-len(self.pet)
-        center_column=(self.columns-self.max_len)//2
+        ground_line=len(cleared_list)-5
+        center_column=(Matrix().columns-self.max_len)//2
 
-        
+        x=0
+        for line in range(top_line,ground_line):
+            for a,b in zip(range(center_column,center_column+self.max_len),self.pet[x]):
+                cleared_list[line][a]=b
+            x+=1
 
+        cleared_list=Matrix().MatrixToList(cleared_list)
 
-        
-
-
-
-
+        print(''.join(cleared_list))
 
     #faire function spawn,left,right
 
 if __name__ == '__main__':
     #Matrix=Matrix()
-    _matrix=Matrix().GetMatrix()
-    cleared_matrix=Matrix().ClearMatrix(_matrix)
-    display=Matrix().INIT(cleared_matrix,'─')
     
-    Pet().Spawn()
+    #Create matrix
+    _matrix=Matrix().GetMatrix()
+    #Convert bytes to strings
+    cleared_matrix=Matrix().ClearMatrix(_matrix)
+    #Initialization of the set
+    display=Matrix().INIT(cleared_matrix,'─')
+    #Make spawn p3t
+    Pet().SpawnAtCenter(display)
 
     #print(''.join(display))
     
