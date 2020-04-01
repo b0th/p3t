@@ -46,7 +46,7 @@ class Matrix:
 class Pet:
 
     def __init__(self):
-        self.pet,self.max_len=pet.snail.split('\n'),0
+        self.pet,self.max_len=pet.camel.split('\n'),0
         
         for i in self.pet:
             if len(i)>self.max_len:
@@ -93,19 +93,24 @@ class Pet:
 
     def MovementPet(self,display):
         #Make spawn p3t
-        Pet().Spawn(display,PET)
+        #Pet().Spawn(display,PET)
         #Moving p3t
         pos=0
         while True:
-            display=Matrix().INIT(cleared_matrix,'-')
+            #display=Matrix().INIT(cleared_matrix,'-')
             random_move=random.choice([1,-1])
-            pos+=random_move
             if random_move==1:
                 p3t=rotated_pet
             else:
                 p3t=PET
-            Pet().Spawn(display,p3t,pos)
-            time.sleep(0.2)
+            try:
+                for x in range(random.randrange(2,10,1)):
+                    pos+=random_move
+                    Pet().Spawn(display,p3t,pos)
+                    display=Matrix().INIT(cleared_matrix,'-')
+                    time.sleep(0.2)
+            except:
+                pass
 
 if __name__ == '__main__':
     #Normal p3t
@@ -120,4 +125,3 @@ if __name__ == '__main__':
     display=Matrix().INIT(cleared_matrix,'-')
     #Displaying
     Pet().MovementPet(display)
-  
