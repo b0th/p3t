@@ -1,6 +1,7 @@
 import numpy as np
 import os,curses,time
 import pet
+import random
 
 class Matrix:
 
@@ -45,30 +46,30 @@ class Matrix:
 class Pet:
 
     def __init__(self):
-        self.pet,self.max_len=pet.camel.split('\n'),0
+        self.pet,self.max_len=pet.snail.split('\n'),0
         
         for i in self.pet:
             if len(i)>self.max_len:
                 self.max_len=len(i)
         
-    def Spawn(self,cleared_list,pet):
+    def Spawn(self,cleared_list,pet,pos=0): #Random spawn pos -> w Matrix().columns & random.choice
         cleared_list=Matrix().ListToMatrix(cleared_list)
        
         top_line=len(cleared_list)-5-len(pet)
         ground_line=len(cleared_list)-5
-        center_column=(Matrix().columns-self.max_len)//2
+        center_column=(Matrix().columns-self.max_len)//2+pos
 
-        x=0
-        for line in range(top_line,ground_line):
+       
+        for line,x in zip(range(top_line,ground_line),range(len(pet))):
             for a,b in zip(range(center_column,center_column+self.max_len),pet[x]):
                 cleared_list[line][a]=b
-            x+=1
+          
 
         cleared_list=Matrix().MatrixToList(cleared_list)
         print(''.join(cleared_list))
     
     def RotatePet(self):
-        rev_symbols={'\\':'/','/':'\\','(':')',')':'(','{':'}','}':'{','<':'>','>':'<'}
+        rev_symbols={'\\':'/','/':'\\','(':')',')':'(','{':'}','}':'{','<':'>','>':'<',"'":'`','`':"'"}
         space_count=[self.max_len-len(x) for x in self.pet]
 
         for i in range(len(self.pet)):
@@ -90,7 +91,21 @@ class Pet:
             rotated_pet[i]=''.join(rotated_pet[i])
         return rotated_pet
 
-    #faire function spawn,left,right
+    def MovementPet(self,display):
+        #Make spawn p3t
+        Pet().Spawn(display,PET)
+        #Moving p3t
+        pos=0
+        while True:
+            display=Matrix().INIT(cleared_matrix,'-')
+            random_move=random.choice([1,-1])
+            pos+=random_move
+            if random_move==1:
+                p3t=rotated_pet
+            else:
+                p3t=PET
+            Pet().Spawn(display,p3t,pos)
+            time.sleep(0.2)
 
 if __name__ == '__main__':
     #Normal p3t
@@ -103,50 +118,6 @@ if __name__ == '__main__':
     cleared_matrix=Matrix().ClearMatrix(_matrix)
     #Initialization of the set
     display=Matrix().INIT(cleared_matrix,'-')
-    #Make spawn p3t
-    while True:
-        Pet().Spawn(display,PET)
-        time.sleep(1)
-        display=Matrix().INIT(cleared_matrix,'-')
-        Pet().Spawn(display,rotated_pet)
-        time.sleep(1)
-        display=Matrix().INIT(cleared_matrix,'-')
-
-    #print(''.join(display))
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''stdscr = curses.initscr()
-for i in range(10):
-    print(''.join(display))
-    stdscr.refresh()
-
-    time.sleep(0.2)
-
-
-curses.endwin()'''
+    #Displaying
+    Pet().MovementPet(display)
+  
