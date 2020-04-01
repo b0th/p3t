@@ -62,12 +62,10 @@ class Pet:
         ground_line=len(cleared_list)-5
         center_column=(Matrix().columns-self.max_len)//2+pos
 
-       
         for line,x in zip(range(top_line,ground_line),range(len(pet))):
             for a,b in zip(range(center_column,center_column+self.max_len),pet[x]):
                 cleared_list[line][a]=b
           
-
         cleared_list=Matrix().MatrixToList(cleared_list)
         print(''.join(cleared_list))
     
