@@ -23,8 +23,7 @@ class Matrix:
 
     def INIT(self,cleared_list,symbol):
         ground_line=len(cleared_list)-5
-        add_line=''.join([symbol for i in range(self.columns)])
-        #add_line=''.join(add_line)
+        add_line=symbol*self.columns
         clear_line=add_line.replace(symbol,' ')
         cleared_list[ground_line]=add_line
         for i in range(ground_line):
@@ -52,38 +51,66 @@ class Pet:
             if len(i)>self.max_len:
                 self.max_len=len(i)
         
-
-    def SpawnAtCenter(self,cleared_list):
-
+    def Spawn(self,cleared_list,pet):
         cleared_list=Matrix().ListToMatrix(cleared_list)
        
-        top_line=len(cleared_list)-5-len(self.pet)
+        top_line=len(cleared_list)-5-len(pet)
         ground_line=len(cleared_list)-5
         center_column=(Matrix().columns-self.max_len)//2
 
         x=0
         for line in range(top_line,ground_line):
-            for a,b in zip(range(center_column,center_column+self.max_len),self.pet[x]):
+            for a,b in zip(range(center_column,center_column+self.max_len),pet[x]):
                 cleared_list[line][a]=b
             x+=1
 
         cleared_list=Matrix().MatrixToList(cleared_list)
-
         print(''.join(cleared_list))
+    
+    def RotatePet(self):
+        rev_symbols={'\\':'/','/':'\\','(':')',')':'(','{':'}','}':'{','<':'>','>':'<'}
+        space_count=[self.max_len-len(x) for x in self.pet]
+
+        for i in range(len(self.pet)):
+            self.pet[i]=tuple(self.pet[i][::-1])
+
+        rotated_pet=[]
+        for x,space in zip(self.pet,space_count):
+            sub,a=[],0
+            sub.append(space*' ')
+            for c in x:
+                for y in rev_symbols:
+                    if c==y:
+                        c=rev_symbols[y]
+                        break
+                sub.append(c)
+            rotated_pet.append(sub)
+
+        for i in range(len(rotated_pet)):
+            rotated_pet[i]=''.join(rotated_pet[i])
+        return rotated_pet
 
     #faire function spawn,left,right
 
 if __name__ == '__main__':
-    #Matrix=Matrix()
-    
+    #Normal p3t
+    PET=Pet().pet
+    #Rotated p3t
+    rotated_pet=Pet().RotatePet()
     #Create matrix
     _matrix=Matrix().GetMatrix()
     #Convert bytes to strings
     cleared_matrix=Matrix().ClearMatrix(_matrix)
     #Initialization of the set
-    display=Matrix().INIT(cleared_matrix,'─')
+    display=Matrix().INIT(cleared_matrix,'-')
     #Make spawn p3t
-    Pet().SpawnAtCenter(display)
+    while True:
+        Pet().Spawn(display,PET)
+        time.sleep(1)
+        display=Matrix().INIT(cleared_matrix,'-')
+        Pet().Spawn(display,rotated_pet)
+        time.sleep(1)
+        display=Matrix().INIT(cleared_matrix,'-')
 
     #print(''.join(display))
     
