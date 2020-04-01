@@ -1,7 +1,6 @@
 import numpy as np
-import os,curses,time
-import pet
-import random
+import os,curses,time,sys,random,threading
+from getkey import getkey
 
 class Matrix:
 
@@ -46,12 +45,16 @@ class Matrix:
 class Pet:
 
     def __init__(self):
-        self.pet,self.max_len=pet.camel.split('\n'),0
-        
+
+        pet_name=sys.argv[1]
+        x=open('pets/{}.txt'.format(pet_name),'r')
+        self.pet=x.read().split('\n')
+        self.max_len=0
+
         for i in self.pet:
             if len(i)>self.max_len:
                 self.max_len=len(i)
-        
+
     def Spawn(self,cleared_list,pet,pos=0): #Random spawn pos -> w Matrix().columns & random.choice
         cleared_list=Matrix().ListToMatrix(cleared_list)
        
@@ -104,14 +107,14 @@ class Pet:
             else:
                 p3t=PET
             try:
-                for x in range(random.randrange(2,10,1)):
+                for x in range(random.randrange(2,20,1)):
                     pos+=random_move
                     Pet().Spawn(display,p3t,pos)
                     display=Matrix().INIT(cleared_matrix,'-')
                     time.sleep(0.2)
             except:
                 pass
-
+            
 if __name__ == '__main__':
     #Normal p3t
     PET=Pet().pet
