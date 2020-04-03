@@ -29,4 +29,4 @@ Find a companion turned to the left, for example :
    //_(       //_(
    ```
 
-Put it in a txt file like `camel.txt` in `/pets`. Then you should have `/pets/camel.txt` and you should be able to call it with `python3 main.py camel`.
+Put it in a txt file like `camel.txt` in `/pets`. Then you should have `/pets/camel.txt` and you should be able to call it with `python3 main.py camel 3` for example.
