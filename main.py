@@ -1,7 +1,6 @@
 import numpy as np
 import os,time,sys,random
 
-
 class Matrix:
 
     def __init__(self):
@@ -65,7 +64,6 @@ class Pet:
                 cleared_list[line][a]=b
           
         cleared_list=Matrix().MatrixToList(cleared_list)
-        #print(''.join(cleared_list))
         return ''.join(cleared_list)
     
     def RotatePet(self):
@@ -106,31 +104,27 @@ class Pet:
 
         while True:
             for pet in range(len(pets)):
-                #display=Matrix().INIT(cleared_matrix,'-')
-                #for info in range(len(pets[pet])):
                 p3t=PET
                 if pets[pet][0]==1:
                     p3t=rotated_pet
         
                 try:
-                    
-                    grab_matrix=Pet().Spawn(display,p3t,pets[pet][1])
                     pets[pet][1]+=pets[pet][0]
+                    grab_matrix=Pet().Spawn(display,p3t,pets[pet][1])
+                    
                     if pets[pet][1]==pets[pet][2]:
                         l_or_r=random.choice([-1,1])
-                        goal_pos=l_or_r*random.randrange(3,20,1)+pets[pet][1]
+                        goal_pos=l_or_r*random.randrange(4,20,1)+pets[pet][1]
                         pets[pet]=[l_or_r,pets[pet][1],goal_pos]
-
                 except:
                     pets[pet][0]*=-1
+                    pets[pet][2]=pets[pet][0]*random.randrange(6,20,1)+pets[pet][1]
                     pets[pet][1]+=pets[pet][0]
-                    pets[pet][2]=pets[pet][0]*random.randrange(3,20,1)+pets[pet][1]
-                    #grab_matrix=Pet().Spawn(display,p3t,pets[pet][1])
+                    
 
             display=Matrix().INIT(cleared_matrix,'─')
             print(''.join(grab_matrix))
             print(pets)
-
             time.sleep(0.2)
             
 if __name__ == '__main__':
