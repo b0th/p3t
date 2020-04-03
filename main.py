@@ -1,6 +1,6 @@
 import numpy as np
-import os,curses,time,sys,random,threading
-from getkey import getkey
+import os,time,sys,random
+
 
 class Matrix:
 
@@ -57,17 +57,16 @@ class Pet:
 
     def Spawn(self,cleared_list,pet,pos=0): #Random spawn pos -> w Matrix().columns & random.choice
         cleared_list=Matrix().ListToMatrix(cleared_list)
-       
         top_line=len(cleared_list)-5-len(pet)
         ground_line=len(cleared_list)-5
-        center_column=(Matrix().columns-self.max_len)//2+pos
 
         for line,x in zip(range(top_line,ground_line),range(len(pet))):
-            for a,b in zip(range(center_column,center_column+self.max_len),pet[x]):
+            for a,b in zip(range(pos,pos+self.max_len),pet[x]):
                 cleared_list[line][a]=b
           
         cleared_list=Matrix().MatrixToList(cleared_list)
-        print(''.join(cleared_list))
+        #print(''.join(cleared_list))
+        return ''.join(cleared_list)
     
     def RotatePet(self):
         rev_symbols={'\\':'/','/':'\\','(':')',')':'(','{':'}','}':'{','<':'>','>':'<',"'":'`','`':"'"}
@@ -92,26 +91,47 @@ class Pet:
             rotated_pet[i]=''.join(rotated_pet[i])
         return rotated_pet
 
-    def MovementPet(self,display):
-        #Make spawn p3t
-        #Pet().Spawn(display,PET)
-        #Moving p3t
-        pos=0
+    def RandomPetPosition(self):
+        l_or_r=random.choice([1,-1])
+        columns=Matrix().columns
+        random_pos=random.randrange(3,columns-self.max_len,1)
+        goal_pos=l_or_r*random.randrange(3,20,1)+random_pos
+        return [l_or_r,random_pos,goal_pos]
+
+    def MovementPets(self,display):
+        pets_number,pets=int(sys.argv[2]),[]
+
+        for i in range(pets_number):
+            pets.append(Pet().RandomPetPosition())
+
         while True:
-            #display=Matrix().INIT(cleared_matrix,'-')
-            random_move=random.choice([1,-1])
-            if random_move==1:
-                p3t=rotated_pet
-            else:
+            for pet in range(len(pets)):
+                #display=Matrix().INIT(cleared_matrix,'-')
+                #for info in range(len(pets[pet])):
                 p3t=PET
-            try:
-                for x in range(random.randrange(2,20,1)):
-                    pos+=random_move
-                    Pet().Spawn(display,p3t,pos)
-                    display=Matrix().INIT(cleared_matrix,'-')
-                    time.sleep(0.2)
-            except:
-                pass
+                if pets[pet][0]==1:
+                    p3t=rotated_pet
+        
+                try:
+                    
+                    grab_matrix=Pet().Spawn(display,p3t,pets[pet][1])
+                    pets[pet][1]+=pets[pet][0]
+                    if pets[pet][1]==pets[pet][2]:
+                        l_or_r=random.choice([-1,1])
+                        goal_pos=l_or_r*random.randrange(3,20,1)+pets[pet][1]
+                        pets[pet]=[l_or_r,pets[pet][1],goal_pos]
+
+                except:
+                    pets[pet][0]*=-1
+                    pets[pet][1]+=pets[pet][0]
+                    pets[pet][2]=pets[pet][0]*random.randrange(3,20,1)+pets[pet][1]
+                    #grab_matrix=Pet().Spawn(display,p3t,pets[pet][1])
+
+            display=Matrix().INIT(cleared_matrix,'─')
+            print(''.join(grab_matrix))
+            print(pets)
+
+            time.sleep(0.2)
             
 if __name__ == '__main__':
     #Normal p3t
@@ -123,6 +143,6 @@ if __name__ == '__main__':
     #Convert bytes to strings
     cleared_matrix=Matrix().ClearMatrix(_matrix)
     #Initialization of the set
-    display=Matrix().INIT(cleared_matrix,'-')
+    display=Matrix().INIT(cleared_matrix,'─')
     #Displaying
-    Pet().MovementPet(display)
+    Pet().MovementPets(display)
