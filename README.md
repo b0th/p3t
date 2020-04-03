@@ -6,9 +6,9 @@ Run `install.sh`
 
 ## How to run it ?
 
-`python3 main.py pet_name`
+`python3 main.py pet_name number_of_spawns`
 
-Example : `python3 main.py bear`
+Example : `python3 main.py bear 2`
 
 ## How to get a custom p3t ?
 
