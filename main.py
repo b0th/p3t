@@ -124,7 +124,7 @@ class Pet:
 
             display=Matrix().INIT(cleared_matrix,'─')
             print(''.join(grab_matrix))
-            print(pets)
+            #print(pets)
             time.sleep(0.2)
             
 if __name__ == '__main__':
