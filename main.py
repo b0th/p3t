@@ -1,5 +1,6 @@
 import numpy as np
 import os,time,sys,random
+import current_time
 
 class Matrix:
 
@@ -21,15 +22,27 @@ class Matrix:
         return ret
 
     def INIT(self,cleared_list,symbol):
-        ground_line=len(cleared_list)-5
+        ground_line=len(cleared_list)-3
         add_line=symbol*self.columns
         clear_line=add_line.replace(symbol,' ')
         cleared_list[ground_line]=add_line
         for i in range(ground_line):
             cleared_list[i]=clear_line
-        return cleared_list
+    
+        if sys.argv[3] != 'time':
+            return cleared_list
 
-    # v Recommended to use after function INIT v
+        currenttime,total_len=current_time.Time().TimeToAsciiArt()
+        a,space=(self.columns-total_len)//2,0
+        try:
+            for x in currenttime:
+                Pet().Spawn(cleared_list,x,a,-1*self.lines + len(x)+1)
+                maxlen=len(max(x,key=len))
+                a+=maxlen+space
+        except:
+            pass
+
+        return cleared_list
     
     def ListToMatrix(self,MATRIX):
         for i in range(len(MATRIX)):
@@ -54,10 +67,10 @@ class Pet:
             if len(i)>self.max_len:
                 self.max_len=len(i)
 
-    def Spawn(self,cleared_list,pet,pos=0): #Random spawn pos -> w Matrix().columns & random.choice
+    def Spawn(self,cleared_list,pet,pos=0,line_number=-3): #Random spawn pos -> w Matrix().columns & random.choice
         cleared_list=Matrix().ListToMatrix(cleared_list)
-        top_line=len(cleared_list)-5-len(pet)
-        ground_line=len(cleared_list)-5
+        top_line=len(cleared_list)+line_number-len(pet)
+        ground_line=len(cleared_list)+line_number
 
         for line,x in zip(range(top_line,ground_line),range(len(pet))):
             for a,b in zip(range(pos,pos+self.max_len),pet[x]):
@@ -120,7 +133,6 @@ class Pet:
                     pets[pet][0]*=-1
                     pets[pet][2]=pets[pet][0]*random.randrange(6,20,1)+pets[pet][1]
                     pets[pet][1]+=pets[pet][0]
-                    
 
             display=Matrix().INIT(cleared_matrix,'─')
             print(''.join(grab_matrix))
