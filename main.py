@@ -1,5 +1,5 @@
 import numpy as np
-import os,time,sys,random
+import os,time,sys,random,argparse
 import current_time
 
 class Matrix:
@@ -29,7 +29,7 @@ class Matrix:
         for i in range(ground_line):
             cleared_list[i]=clear_line
     
-        if sys.argv[3] != 'time':
+        if not args.time:
             return cleared_list
 
         currenttime,total_len=current_time.Time().TimeToAsciiArt()
@@ -58,7 +58,7 @@ class Pet:
 
     def __init__(self):
 
-        pet_name=sys.argv[1]
+        pet_name=args.pet
         x=open('pets/{}.txt'.format(pet_name),'r')
         self.pet=x.read().split('\n')
         self.max_len=0
@@ -110,7 +110,7 @@ class Pet:
         return [l_or_r,random_pos,goal_pos]
 
     def MovementPets(self,display):
-        pets_number,pets=int(sys.argv[2]),[]
+        pets_number,pets=args.number,[]
 
         for i in range(pets_number):
             pets.append(Pet().RandomPetPosition())
@@ -140,6 +140,12 @@ class Pet:
             time.sleep(0.1)
             
 if __name__ == '__main__':
+    #argparse arguments/options
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-p','--pet',type=str,help='Pet name, example: -p bear, check pets/')
+    parser.add_argument('-n','--number',type=int,help='Number of pets')
+    parser.add_argument('-t','--time',action='store_true',help='It displays the current time')
+    args = parser.parse_args()
     #Normal p3t
     PET=Pet().pet
     #Rotated p3t
