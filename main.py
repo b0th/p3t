@@ -145,7 +145,11 @@ if __name__ == '__main__':
     parser.add_argument('-p','--pet',type=str,help='Pet name, example: -p bear, check pets/')
     parser.add_argument('-n','--number',type=int,help='Number of pets')
     parser.add_argument('-t','--time',action='store_true',help='It displays the current time')
+    parser.add_argument('-l','--list',action='store_true',help='It show pets list')
     args = parser.parse_args()
+    if args.list:
+        print('Pets [availables]:\n' + ' '.join(os.listdir('./pets/')).replace('.txt',''))
+        sys.exit()
     #Normal p3t
     PET=Pet().pet
     #Rotated p3t
