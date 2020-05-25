@@ -21,7 +21,7 @@ optional arguments:
 
 Usage example : `python3 main.py -p bear -n 2 -t`
 
-## How to get a custom p3t ?
+## How to get your own p3t ?
 
 Find a companion turned to the left, for example :
 ```
