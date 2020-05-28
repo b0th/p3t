@@ -1,4 +1,4 @@
-# 🐉 p3t
+# 🦊 p3t
 
 ## How to install it ?
 
