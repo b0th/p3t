@@ -40,4 +40,4 @@ Find a companion turned to the left, for example :
    //_(       //_(
    ```
 
-Put it in a txt file like `camel.txt` in `/pets`(/pets/camel.txt).
+Put it in a txt file like `camel.txt` in `/pets`(./pets/camel.txt).
